@@ -37,7 +37,11 @@ const ProductList = async ({
           <Categories />
         </Suspense>
       )}
-      {params !== "homepage" && <Filter />}
+      {params !== "homepage" && (
+        <Suspense fallback={<div className="h-10" />}>
+          <Filter />
+        </Suspense>
+      )}
       {products.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-gray-400">
           <p className="text-lg font-medium">No products found</p>

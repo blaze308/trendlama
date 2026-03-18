@@ -8,7 +8,7 @@ import { ArrowRight, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
 const steps = [
   { id: 1, title: "Shopping Cart" },
@@ -19,7 +19,7 @@ const steps = [
 const SHIPPING_FEE = 10;
 const DISCOUNT_RATE = 0.1;
 
-const CartPage = () => {
+const CartContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [shippingForm, setShippingForm] = useState<ShippingFormInputs>();
@@ -32,7 +32,7 @@ const CartPage = () => {
   const total = subtotal - discount + SHIPPING_FEE;
 
   return (
-    <div className="flex flex-col gap-8 items-center justify-center mt-12">
+    <div className="flex flex-col gap-8 items-center justify-center mt-12 pb-20">
       {/* TITLE */}
       <h1 className="text-2xl font-semibold text-gray-800">Your Shopping Cart</h1>
 
@@ -192,6 +192,20 @@ const CartPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CartPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-[80vh] flex items-center justify-center">
+          <p className="text-gray-500 text-sm animate-pulse">Loading cart...</p>
+        </div>
+      }
+    >
+      <CartContent />
+    </Suspense>
   );
 };
 
